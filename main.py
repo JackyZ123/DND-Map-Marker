@@ -12,16 +12,53 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///maps.db"
 db = SQLAlchemy(app)
 
 
-from models import *
+class Map(db.Model):
+    """The individual maps"""
+    __tablename__ = "Map"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    location = db.Column(db.String(500))
+
+    size_x = db.Column(db.Integer)
+    size_y = db.Column(db.Integer)
+    offset_x = db.Column(db.Float)
+    offset_y = db.Column(db.Float)
+
+    pixels_x = db.Column(db.Integer)
+    pixels_y = db.Column(db.Integer)
+
+    first_up = db.Column(db.Boolean)
+    radius = db.Column(db.Float)
+
+    nodes = db.relationship("Node", back_populates="map")
+
+
+class Node(db.Model):
+    """The nodes on each map"""
+    __tablename__ = "Node"
+
+    id = db.Column(db.Integer, primary_key=True)
+    mid = db.Column(db.Integer, db.ForeignKey("Map.id"))
+    x = db.Column(db.Integer)
+    y = db.Column(db.Integer)
+    color = db.Column(db.String(120))
+    note = db.Column(db.Text)
+
+    map = db.relationship("Map", back_populates="nodes")
+
+
+# with app.app_context():
+#     print(len(Map.query.all()))
 
 
 @app.route('/', methods=["GET"])
 def hex():
     """page for hexgonal tiles"""
 
-    map_name = "Chult"
+    map_name = "Tumal"
 
-    cur_map = Map.query.filter_by(name="Chult").first()
+    cur_map = Map.query.filter_by(name=map_name).first()
     aspect_ratio = cur_map.pixels_y / cur_map.pixels_x
     offset = [cur_map.offset_x, cur_map.offset_y]
 

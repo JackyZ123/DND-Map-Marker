@@ -11,6 +11,12 @@ var highlight_index = { x: -1, y: -1 };
 var hex_radius;
 var hex_height;
 
+var first_up;
+
+function SetFirstUp(is_first_up){
+    first_up = is_first_up;
+}
+
 function SetHexRadius(radius) {
     hex_radius = radius;
     hex_height = Math.sqrt(3) * radius;
@@ -183,6 +189,8 @@ function closestHex() {
 
     var top_left_hex_index;
 
+    // console.log(first_up);
+
     if ((top_left_x % 2 == 0 && first_up) || (top_left_x % 2 == 1 && !first_up)) {
         top_left_hex_index = {
             x: top_left_x,
@@ -351,7 +359,7 @@ function GetColor(color) {
         return "rgb(80,80,80,0.7)"
     }
     else if (color = "pink") {
-        return "rgb(255,192,203,0.8)";
+        return "rgb(255,192,203,0.7)";
     }
     else {
         return "rgb(0,0,0,1)"

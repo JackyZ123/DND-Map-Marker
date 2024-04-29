@@ -39,19 +39,25 @@ function addElement(pos, element) {
     else {
         element = element.substring(2, element.length - 2);
 
-        while (element.includes("\n")) {
-            element = element.replace("\n", "\\n");
-        }
-
         eval(getStringPosition(pos) + ".push('" + element + "')");
     }
 
     return true
 }
 
+var specialCharacters = { "\n": "\\n", "&lt;": "<", "&gt;": ">", "&#34;": '"' };
+
 function SetTileData(tiles) {
     tiles = tiles.slice(1, -1);
     tiles = tiles.replace(/&#39;/g, "🬀");
+
+    for (const [key, value] of Object.entries(specialCharacters)) {
+        while (tiles.includes(key)) {
+            tiles = tiles.replace(key, value);
+        }
+    }
+
+    console.log(JSON.stringify(tiles));
 
     var position = [0];
     var start_pos = 0;

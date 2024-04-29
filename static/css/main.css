@@ -78,3 +78,7 @@ textarea {
 .save-button {
     background-color: rgb(0, 255, 0);
 }
+
+div:hover {
+    cursor: default;
+}
